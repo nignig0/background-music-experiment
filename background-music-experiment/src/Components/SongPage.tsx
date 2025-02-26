@@ -3,7 +3,6 @@ import './../styles/App.css';
 import { SilentPlayer } from './SilentPlayer';
 
 export type SongPageProps = {
-    backgroundColor: string,
     taniMessage: string,
     songName: string,
     songPictureUrl: string,
@@ -13,7 +12,6 @@ export type SongPageProps = {
 
 export function SongPage(
     {
-        backgroundColor, 
         taniMessage,
         songName,
         songPictureUrl,
@@ -24,7 +22,7 @@ export function SongPage(
         <>
         <div className = 'songDiv'
         style = {{
-            backgroundColor: backgroundColor
+            backgroundImage:  `url(${songPictureUrl})`
         }}
         >
             <div className = 'songDivSection'

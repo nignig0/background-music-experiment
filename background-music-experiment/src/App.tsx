@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import './styles/App.css'
 import { SongPage } from './Components/SongPage';
-import { AwayPark, TakeMeAway } from './songs';
+import { AwayPark, DanceNow, Lauren, TakeMeAway } from './songs';
 import { SilentPlayer } from './Components/SilentPlayer';
 function App() {
 
@@ -49,12 +49,15 @@ function App() {
     //I think in the long run its best to have the silent player here
     //and to use a useRef or something to control it with the scrolls
     <>
+    <div>
     <button onClick = {()=>{
       setPlay(!play);
     }}> Click here to play!</button>
     <SilentPlayer song =  {song} play = {play}/>
     <SongPage {...AwayPark} />
     <SongPage {...TakeMeAway} /> 
+    <SongPage {...DanceNow} /> 
+    </div>
     </>
   )
 }
