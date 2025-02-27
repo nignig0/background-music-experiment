@@ -6,6 +6,7 @@ export type SongPageProps = {
     taniMessage: string,
     songName: string,
     songPictureUrl: string,
+    songBackground: string, 
     youTubeSongId: string, 
 
 }
@@ -15,6 +16,7 @@ export function SongPage(
         taniMessage,
         songName,
         songPictureUrl,
+        songBackground,
         youTubeSongId, 
     }: SongPageProps){
 
@@ -22,7 +24,7 @@ export function SongPage(
         <>
         <div className = 'songDiv'
         style = {{
-            backgroundImage:  `url(${songPictureUrl})`
+            backgroundImage:  `url(${songBackground})`
         }}
         >
             <div className = 'songDivSection'
@@ -32,7 +34,7 @@ export function SongPage(
                 alignItems: 'center'
             }}
             >
-                <h1>{taniMessage}</h1>
+                <h1 className = 'knewave-regular'>{taniMessage}</h1>
             </div>
 
             <div className = 'songDivSection'
@@ -43,8 +45,12 @@ export function SongPage(
                     justifyContent: 'center'
                 }}
             >
-                <img src = {songPictureUrl} height='50%' width = '50%'/>
-                <h1>{songName}</h1>
+                <img src = {songPictureUrl} height='50%' width = '50%' 
+                style = {{
+                    objectFit: 'cover'
+                }}
+                />
+                <h1 className='knewave-regular'>{songName}</h1>
             </div>
 
         </div>

@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import './styles/App.css'
 import { SongPage } from './Components/SongPage';
-import { AwayPark, DanceNow, Lauren, TakeMeAway } from './songs';
+import { Wait, DanceNow, TakeMeAway } from './songs';
 import { SilentPlayer } from './Components/SilentPlayer';
 function App() {
 
-  const songArr = [AwayPark, TakeMeAway];
+  const songArr = [Wait, TakeMeAway];
   const [song, setSong] = useState(songArr[0].youTubeSongId);
   const [play, setPlay] = useState(false);
 
@@ -54,7 +54,7 @@ function App() {
       setPlay(!play);
     }}> Click here to play!</button>
     <SilentPlayer song =  {song} play = {play}/>
-    <SongPage {...AwayPark} />
+    <SongPage {...Wait} />
     <SongPage {...TakeMeAway} /> 
     <SongPage {...DanceNow} /> 
     </div>

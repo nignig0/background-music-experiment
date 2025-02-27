@@ -23,6 +23,7 @@ body{
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
 
 }
 
@@ -36,3 +37,10 @@ body{
 .songDivSection h1 {
   color: white
 }
+.knewave-regular {
+  font-family: "Knewave", serif;
+  font-weight: 400;
+  font-style: normal;
+  opacity: 0.5;
+}
+
