@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './../styles/App.css';
 import { SilentPlayer } from './SilentPlayer';
 
 export type SongPageProps = {
-    taniMessage: string,
+    message: string[],
     songName: string,
     songPictureUrl: string,
     songBackground: string, 
@@ -11,14 +11,16 @@ export type SongPageProps = {
 
 }
 
+
 export function SongPage(
     {
-        taniMessage,
+        message,
         songName,
         songPictureUrl,
         songBackground,
         youTubeSongId, 
     }: SongPageProps){
+
 
     return(
         <>
@@ -30,11 +32,19 @@ export function SongPage(
             <div className = 'songDivSection'
             style = {{
                 display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
+                flexDirection: 'column',
+                alignItems: 'center',
+                overflow: 'hidden',
             }}
+           
             >
-                <h1 className = 'knewave-regular'>{taniMessage}</h1>
+                <div className='message'>
+                {message.map((m)=><><h1
+                    className = 'poppins-scroll'
+                    >{m}</h1> <br/></>)}
+                </div>
+                
+                
             </div>
 
             <div className = 'songDivSection'
@@ -50,7 +60,7 @@ export function SongPage(
                     objectFit: 'cover'
                 }}
                 />
-                <h1 className='knewave-regular'>{songName}</h1>
+                <h1 className='poppins-regular'>{songName}</h1>
             </div>
 
         </div>
