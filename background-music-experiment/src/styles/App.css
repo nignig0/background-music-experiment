@@ -24,7 +24,7 @@ body{
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-
+  scroll-snap-align: start;
 }
 
 .songDivSection {
@@ -85,3 +85,13 @@ body{
   margin: 20%;
 }
 
+
+.poppins-regular-glow {
+  font-family: "Poppins", serif;
+  font-weight: 700;
+  font-style: normal;
+  color: white; 
+  font-size: 80px;
+  text-shadow: 
+  0 0 20px #fff;
+}

@@ -35,7 +35,7 @@ export const DanceNow: SongPageProps = {
     songName: 'Dance Now - JID',
     songPictureUrl: 'https://res.cloudinary.com/delocqgic/image/upload/v1740555485/forever-story-poster-jid_wzgmln.png',
     songBackground: `https://res.cloudinary.com/delocqgic/image/upload/e_blur:${blurFactor}/v1740555485/forever-story-poster-jid_wzgmln.png`,
-    youTubeSongId: 'to-be-added'
+    youTubeSongId: 'k6mu9v_zBVc'
 }
 
 

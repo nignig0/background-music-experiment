@@ -3,9 +3,10 @@ import './styles/App.css'
 import { SongPage } from './Components/SongPage';
 import { Wait, DanceNow, TakeMeAway } from './songs';
 import { SilentPlayer } from './Components/SilentPlayer';
+import { StartPage } from './Components/StartPage';
 function App() {
 
-  const songArr = [Wait, TakeMeAway];
+  const songArr = [Wait, TakeMeAway, DanceNow];
   const [song, setSong] = useState(songArr[0].youTubeSongId);
   const [play, setPlay] = useState(false);
 
@@ -14,8 +15,11 @@ function App() {
   const setLimits = ()=>{
     const limits = [];
     for(let i = 0; i<songArr.length; ++i){
-      const start = i*window.innerHeight;
-      const end = i+1*window.innerHeight;
+      let start;
+      if(i == 0) start = 0;
+      else
+        start = (i+1)*window.innerHeight;
+      const end = ((i+2)*window.innerHeight);
       limits.push([start, end, i]);
     }
 
@@ -23,11 +27,13 @@ function App() {
   }
   const limits = setLimits();
 
+  console.log('the limits -> ', limits);
+  
   useEffect(()=>{
     const handleScroll = ()=>{
+      console.log('play ->', play)
       const scrollPosition = window.scrollY;
       console.log(scrollPosition);
-      console.log('inner Height-> ', window.innerHeight);
       for(let i = 0; i < limits.length; ++i){
         const [start, end, index] = limits[i];
 
@@ -44,16 +50,23 @@ function App() {
     }
 
   }, []);
+
+  const startMessage  = "All of this was inspired by you!"
+  const name = "Generic Name";
+  const bottonCallBack = ()=>{
+    setPlay(true);
+  }
   return (
 
     //I think in the long run its best to have the silent player here
     //and to use a useRef or something to control it with the scrolls
     <>
-    <div>
-    <button onClick = {()=>{
-      setPlay(!play);
-    }}> Click here to play!</button>
     <SilentPlayer song =  {song} play = {play}/>
+    <div style = {{
+      scrollSnapType: "y mandatory"
+    }}>
+    <StartPage startMessage = {startMessage} name = {name} buttonCallBack = {bottonCallBack} />
+    
     <SongPage {...Wait} />
     <SongPage {...TakeMeAway} /> 
     <SongPage {...DanceNow} /> 
