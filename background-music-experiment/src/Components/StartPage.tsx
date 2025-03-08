@@ -1,3 +1,4 @@
+import { backendUrl } from '../constants';
 import './../styles/App.css'
 
 export type StartPageProps = {
@@ -38,11 +39,12 @@ export function StartPage({
 
 
             <h1 
-            onClick = {buttonCallBack}
+            //onClick = {buttonCallBack}
+            
             className = 'poppins-regular-glow'
             style = {{
                 fontSize: "32px"
-            }}>Click to start!</h1>
+            }}><a href = {`${backendUrl}/auth/login?return_address=http://127.0.0.1:5173`}>Click to start!</a></h1>
         </div>
         </>
 

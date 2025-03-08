@@ -7,7 +7,7 @@ const spotifyRoutes = express();
 
 spotifyRoutes.get('/login', SpotifyController.login);
 spotifyRoutes.get('/callback', SpotifyController.authCallback);
-
+spotifyRoutes.get('/token', SpotifyController.getToken);
 
 
 export default spotifyRoutes;

@@ -7,7 +7,7 @@ const app = express();
 const port = 5000;
 
 const corsOptions = {
-    origin: ['*'],  // Allow requests from this origin
+    origin: '*',  // Allow requests from this origin
     methods: ['GET', 'POST', 'PUT'],        // Allow specific methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers
   };
