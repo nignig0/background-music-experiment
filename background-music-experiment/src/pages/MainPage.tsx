@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import '.././styles/App.css';
 import { SongPage } from '.././Components/SongPage';
-import { Wait, DanceNow, TakeMeAway } from '.././songs';
+import { Wait, DanceNow, TakeMeAway, message } from '.././songs';
 import { SilentPlayer } from '.././Components/SilentPlayer';
 import { StartPage } from '.././Components/StartPage';
 import axios from 'axios';
@@ -86,8 +86,9 @@ export function MainPage() {
           //get all the songs in the playlist
           for(const item of items){
             const song: Track ={
-              name: item.track.name,
-              imageUrl: item.track.album.images[0],
+              songName: item.track.name,
+              songPictureUrl: item.track.album.images[0],
+              message: message, //testing please!!!
               artists: item.track.artists.map((a: any)=> a.name)
             }
             songs.push(song);
@@ -130,7 +131,11 @@ export function MainPage() {
     <StartPage startMessage = {startMessage} name = {name} buttonCallBack = {bottonCallBack} playlistId = {playlistId!}/>
     {songArr.length != 0 ?
         (
-            <><SongPage {...Wait} /><SongPage {...TakeMeAway} /><SongPage {...DanceNow} /></> 
+          songArr.map((track)=>(
+            <>
+            <SongPage {...track}/>
+            </>
+          ))
         ):
         <div></div>
     }

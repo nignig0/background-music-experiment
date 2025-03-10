@@ -1,5 +1,7 @@
 export interface Track {
-    name: string,
-    imageUrl: string,
+    songName: string,
+    songPictureUrl: string,
+    songBackground?: string,
+    message : string[],
     artists: string[]
 }

@@ -6,8 +6,7 @@ export type SongPageProps = {
     message: string[],
     songName: string,
     songPictureUrl: string,
-    songBackground: string, 
-    youTubeSongId: string, 
+    songBackground?: string, 
 
 }
 
@@ -18,7 +17,6 @@ export function SongPage(
         songName,
         songPictureUrl,
         songBackground,
-        youTubeSongId, 
     }: SongPageProps){
 
 
@@ -26,7 +24,8 @@ export function SongPage(
         <>
         <div className = 'songDiv'
         style = {{
-            backgroundImage:  `url(${songBackground})`
+            backgroundImage: (songBackground != undefined) ?  `url(${songBackground})` : 'none',
+            backgroundColor: (songBackground != undefined) ? 'rgba(0,0,0,0)' : 'rgba(0,0,0, 0.9)'
         }}
         >
             <div className = 'songDivSection'
@@ -55,7 +54,7 @@ export function SongPage(
                     justifyContent: 'center'
                 }}
             >
-                <img src = {songPictureUrl} height='50%' width = '50%' 
+                <img src = {(songPictureUrl as any).url} height='50%' width = '50%' 
                 style = {{
                     objectFit: 'cover'
                 }}
