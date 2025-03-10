@@ -5,7 +5,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path = '/:playListId' element = {<MainPage/>} />
+      <Route path = '/:playlistId' element = {<MainPage/>} />
       </Routes>
     </BrowserRouter>
   );

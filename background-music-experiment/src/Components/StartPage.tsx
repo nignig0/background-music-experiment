@@ -4,13 +4,15 @@ import './../styles/App.css'
 export type StartPageProps = {
     startMessage: string, 
     name: string,
-    buttonCallBack: () => void
+    buttonCallBack: () => void,
+    playlistId: string
 }
 
 export function StartPage({
     startMessage,
     name,
-    buttonCallBack
+    buttonCallBack,
+    playlistId
 }: StartPageProps){
 
     return (
@@ -44,7 +46,7 @@ export function StartPage({
             className = 'poppins-regular-glow'
             style = {{
                 fontSize: "32px"
-            }}><a href = {`${backendUrl}/auth/login?return_address=http://127.0.0.1:5173`}>Click to start!</a></h1>
+            }}><a href = {`${backendUrl}/auth/login?return_address=${playlistId}`}>Click to start!</a></h1>
         </div>
         </>
 

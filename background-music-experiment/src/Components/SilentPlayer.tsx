@@ -3,15 +3,14 @@ import { useEffect, useState } from "react";
 type silentPlayerProps = {
     song: string,
     play: boolean,
-
+    ref: React.RefObject<any>
 }
 
-export function SilentPlayer({song, play} : silentPlayerProps){
+export function SilentPlayer({song, play, ref} : silentPlayerProps){
     console.log(song);
 
     const token = localStorage.getItem('token');
     console.log('token player token -> ', token);
-    const [player, setPlayer] = useState(undefined);
 
     useEffect(()=>{
         const script = document.createElement('script');
@@ -27,7 +26,7 @@ export function SilentPlayer({song, play} : silentPlayerProps){
                 volume: 1
             });
 
-            setPlayer(player);
+            ref.current = player;
 
             player.addListener("ready", (device_id: any)=>{
                 console.log('Ready with devide Id -> ', device_id);
