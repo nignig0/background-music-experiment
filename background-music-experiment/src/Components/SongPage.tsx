@@ -54,7 +54,7 @@ export function SongPage(
                     justifyContent: 'center'
                 }}
             >
-                <img src = {(songPictureUrl as any).url} height='50%' width = '50%' 
+                <img src = {songPictureUrl} height='50%' width = '50%' 
                 style = {{
                     objectFit: 'cover'
                 }}

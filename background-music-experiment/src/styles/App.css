@@ -86,7 +86,7 @@ a {
 .message{
   height: 100%;
   width: 90%;
-  animation: messageScroll 30s alternate infinite;
+  animation: messageScroll 20s alternate infinite;
   margin: 20%;
 }
 

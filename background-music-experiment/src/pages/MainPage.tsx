@@ -1,19 +1,26 @@
 import { useEffect, useRef, useState } from 'react'
 import '.././styles/App.css';
 import { SongPage } from '.././Components/SongPage';
-import { Wait, DanceNow, TakeMeAway, message } from '.././songs';
+import { message } from '.././songs';
 import { SilentPlayer } from '.././Components/SilentPlayer';
 import { StartPage } from '.././Components/StartPage';
 import axios from 'axios';
 import { backendUrl, spotifyBaseUrl } from '../constants';
 import { useParams } from 'react-router-dom';
 import { Track } from '../types';
+import { CloudinaryImage } from '@cloudinary/url-gen';
+import { blur } from "@cloudinary/url-gen/actions/effect";
 
 export function MainPage() {
 
   const [songArr, setSongArr] = useState<Track[]>([]);
-  const player = useRef(null);
+  const songArrRef = useRef<Track[]>([]);
+  const player = useRef<any>(null);
   const [play, setPlay] = useState(false);
+  let limits: number[][];
+  const currentIndex = useRef<number>(-1);
+  
+  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME; 
   
   let { playlistId } = useParams();
   if(playlistId) localStorage.setItem('playlistId', playlistId) ?? '';
@@ -22,38 +29,44 @@ export function MainPage() {
   //there needs to be a better way to do UP
 
 
-  // const setLimits = ()=>{
-  //   const limits = [];
-  //   for(let i = 0; i<songArr.length; ++i){
-  //     let start;
-  //     if(i == 0) start = 0;
-  //     else
-  //       start = (i+1)*window.innerHeight;
-  //     const end = ((i+2)*window.innerHeight);
-  //     limits.push([start, end, i]);
-  //   }
+  const setLimits = (arr: any[])=>{
+    const limits = [];
+    for(let i = 0; i<arr.length; ++i){
+      let start;
+      if(i == 0) start = 0;
+      else
+        start = (i+1)*window.innerHeight;
+      const end = ((i+2)*window.innerHeight);
+      limits.push([start, end, i]);
+    }
 
-  //   return limits;
-  // }
-  // const limits = setLimits();
-
-  // console.log('the limits -> ', limits);
+    return limits;
+  }
+  
   
   useEffect(()=>{
-    // const handleScroll = ()=>{
-    //   console.log('play ->', play)
-    //   const scrollPosition = window.scrollY;
-    //   console.log(scrollPosition);
-    //   for(let i = 0; i < limits.length; ++i){
-    //     const [start, end, index] = limits[i];
+    const handleScroll = ()=>{
+      console.log('play ->', play)
+      const scrollPosition = window.scrollY;
+      console.log(scrollPosition);
+      for(let i = 0; i < limits.length; ++i){
+        const [start, end, index] = limits[i];
 
-    //     if(scrollPosition >= start && scrollPosition < end){
-          
-    //       break;
-    //     }
-    //   }
-    // }
-    // window.addEventListener('scroll', handleScroll);
+        if(scrollPosition >= start && scrollPosition < end){
+          if(player.current) {
+            console.log('handling scroll... song Arr -> ', songArrRef.current);
+            if(i!= currentIndex.current)
+              currentIndex.current = i;
+              player.current.playSong(songArrRef.current[index].songId);
+            //too many fucking requests
+          }
+            
+          else console.log('the player has not been set?')
+          break;
+        }
+      }
+    }
+    window.addEventListener('scroll', handleScroll);
 
     //also add whether we already have the token
     const getToken = async ()=>{
@@ -85,16 +98,27 @@ export function MainPage() {
 
           //get all the songs in the playlist
           for(const item of items){
-            const song: Track ={
+            const backgroundUrl = new CloudinaryImage(
+              item.track.album.images[0].url, {cloudName: cloudName})
+              .setDeliveryType("fetch")
+              .effect(blur().strength(400))
+            
+            console.log(backgroundUrl.toURL());
+            const song: Track = {
               songName: item.track.name,
-              songPictureUrl: item.track.album.images[0],
+              songPictureUrl: item.track.album.images[0].url,
               message: message, //testing please!!!
-              artists: item.track.artists.map((a: any)=> a.name)
+              artists: item.track.artists.map((a: any)=> a.name),
+              songBackground: backgroundUrl.toURL(),
+              songId: item.track.id,
             }
             songs.push(song);
           }
           console.log('Songs -> ', songs);
           setSongArr(songs);
+          songArrRef.current = songs;
+          limits = setLimits(songs);
+          console.log('the limits -> ', limits);
         }
       }).catch((e)=>{
         alert('There was an error getting songs from the playlist');
@@ -124,7 +148,7 @@ export function MainPage() {
     //I think in the long run its best to have the silent player here
     //and to use a useRef or something to control it with the scrolls
     <>
-    <SilentPlayer song =  {''} play = {play} ref = {player}/>
+    <SilentPlayer ref={player} />
     <div style = {{
       scrollSnapType: "y mandatory" //check this out 
     }}>

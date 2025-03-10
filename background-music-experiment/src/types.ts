@@ -3,5 +3,6 @@ export interface Track {
     songPictureUrl: string,
     songBackground?: string,
     message : string[],
-    artists: string[]
+    artists: string[],
+    songId: string
 }
