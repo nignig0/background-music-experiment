@@ -18,7 +18,7 @@ export function MainPage() {
   const player = useRef<any>(null);
   const [play, setPlay] = useState(false);
   let limits: number[][];
-  const currentIndex = useRef<number>(-1);
+  const [currentIndex, setCurrentIndex] = useState(-1);
   
   const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME; 
   
@@ -27,47 +27,9 @@ export function MainPage() {
   else playlistId = localStorage.getItem('playlistId')!;
 
   //there needs to be a better way to do UP
-
-
-  const setLimits = (arr: any[])=>{
-    const limits = [];
-    for(let i = 0; i<arr.length; ++i){
-      let start;
-      if(i == 0) start = 0;
-      else
-        start = (i+1)*window.innerHeight;
-      const end = ((i+2)*window.innerHeight);
-      limits.push([start, end, i]);
-    }
-
-    return limits;
-  }
   
   
   useEffect(()=>{
-    const handleScroll = ()=>{
-      console.log('play ->', play)
-      const scrollPosition = window.scrollY;
-      console.log(scrollPosition);
-      for(let i = 0; i < limits.length; ++i){
-        const [start, end, index] = limits[i];
-
-        if(scrollPosition >= start && scrollPosition < end){
-          if(player.current) {
-            console.log('handling scroll... song Arr -> ', songArrRef.current);
-            if(i!= currentIndex.current)
-              currentIndex.current = i;
-              player.current.playSong(songArrRef.current[index].songId);
-            //too many fucking requests
-          }
-            
-          else console.log('the player has not been set?')
-          break;
-        }
-      }
-    }
-    window.addEventListener('scroll', handleScroll);
-
     //also add whether we already have the token
     const getToken = async ()=>{
       const request = await axios.get(`${backendUrl}/auth/token`);
@@ -117,8 +79,6 @@ export function MainPage() {
           console.log('Songs -> ', songs);
           setSongArr(songs);
           songArrRef.current = songs;
-          limits = setLimits(songs);
-          console.log('the limits -> ', limits);
         }
       }).catch((e)=>{
         alert('There was an error getting songs from the playlist');
@@ -140,29 +100,27 @@ export function MainPage() {
 
   const startMessage  = "All of this was inspired by you!"
   const name = "Generic Name";
-  const bottonCallBack = ()=>{
-    setPlay(true);
+  const callBack = ()=>{
+    setCurrentIndex(currentIndex+1);
+    
   }
   return (
 
     //I think in the long run its best to have the silent player here
     //and to use a useRef or something to control it with the scrolls
     <>
-    <SilentPlayer ref={player} />
+    <SilentPlayer playListId = {playlistId} songChangeCallBack={callBack}/>
     <div style = {{
       scrollSnapType: "y mandatory" //check this out 
     }}>
-    <StartPage startMessage = {startMessage} name = {name} buttonCallBack = {bottonCallBack} playlistId = {playlistId!}/>
-    {songArr.length != 0 ?
-        (
-          songArr.map((track)=>(
-            <>
-            <SongPage {...track}/>
-            </>
-          ))
-        ):
-        <div></div>
+    {songArr.length > 0 && currentIndex != -1 ?
+    (
+      <SongPage {...songArr[currentIndex]}/>
+      
+    ): 
+    <StartPage startMessage = {startMessage} name = {name} playlistId = {playlistId!}/>
     }
+    
     </div>
     </>
   )

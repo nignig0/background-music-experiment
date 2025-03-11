@@ -4,14 +4,12 @@ import './../styles/App.css'
 export type StartPageProps = {
     startMessage: string, 
     name: string,
-    buttonCallBack: () => void,
     playlistId: string
 }
 
 export function StartPage({
     startMessage,
     name,
-    buttonCallBack,
     playlistId
 }: StartPageProps){
 
