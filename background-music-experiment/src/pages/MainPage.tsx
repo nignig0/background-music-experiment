@@ -40,7 +40,6 @@ export function MainPage() {
         } 
       }
     }
-    //probably need to refactor this in the future
 
     const getSongsFromPlaylist = async (token: string)=>{
       await axios.get(`${spotifyBaseUrl}/${playlistId}`,{
@@ -82,18 +81,10 @@ export function MainPage() {
       }).catch((e)=>{
         alert('There was an error getting songs from the playlist');
         console.log('Error getting songs from the playlist ->', e);
-      })
-      
-        
+      })  
     }
 
-
     getToken();
-    
-
-    // return ()=>{
-    //   window.removeEventListener('scroll', handleScroll);
-    // }
 
   }, []);
   
@@ -116,14 +107,10 @@ export function MainPage() {
     }else{
       //navigate to the endpage!
     }
-
-
-  
   }
   return (
 
     //I think in the long run its best to have the silent player here
-    //and to use a useRef or something to control it with the scrolls
     <>
     <SilentPlayer playListId = {playlistId} songChangeCallBack={callBack}/>
     <div>

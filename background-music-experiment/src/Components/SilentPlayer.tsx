@@ -9,7 +9,6 @@ type SilentPlayerProps = {
 export function SilentPlayer({ playListId, songChangeCallBack }: SilentPlayerProps){
     
     const token = localStorage.getItem('token');
-    const deviceIdRef = useRef<string>('');
     const lastSongId = useRef<string>(null);
     console.log('token player token -> ', token);
 
@@ -123,7 +122,6 @@ export function SilentPlayer({ playListId, songChangeCallBack }: SilentPlayerPro
 
             player.addListener("not_ready", (device_id: any)=>{
                 console.log('Device id has gone offline -> ', device_id);
-                deviceIdRef.current = '';
             });
 
             player.connect();
