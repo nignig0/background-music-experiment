@@ -15,10 +15,9 @@ export function MainPage() {
 
   const [songArr, setSongArr] = useState<Track[]>([]);
   const songArrRef = useRef<Track[]>([]);
-  const player = useRef<any>(null);
-  const [play, setPlay] = useState(false);
-  let limits: number[][];
+  const [prevBackground, setPrevBackground] = useState<string>('');
   const [currentIndex, setCurrentIndex] = useState(-1);
+  const currentIndexRef = useRef(-1);
   
   const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME; 
   
@@ -97,12 +96,29 @@ export function MainPage() {
     // }
 
   }, []);
+  
 
   const startMessage  = "All of this was inspired by you!"
   const name = "Generic Name";
   const callBack = ()=>{
-    setCurrentIndex(currentIndex+1);
-    
+    console.log('call back hit!');
+    if(currentIndex < songArrRef.current.length-1){
+
+      const newSong = songArrRef.current[currentIndexRef.current+1];
+      console.log(newSong);
+      const img = new Image();
+      img.src = newSong.songBackground;
+      img.onload = ()=>{
+        setPrevBackground(prev => (currentIndex >= 0 ) ? songArrRef.current[currentIndex].songBackground : songArrRef.current[0].songBackground);
+        setCurrentIndex(currentIndex => currentIndex+1);
+        currentIndexRef.current+=1;
+      }
+    }else{
+      //navigate to the endpage!
+    }
+
+
+  
   }
   return (
 
@@ -110,12 +126,10 @@ export function MainPage() {
     //and to use a useRef or something to control it with the scrolls
     <>
     <SilentPlayer playListId = {playlistId} songChangeCallBack={callBack}/>
-    <div style = {{
-      scrollSnapType: "y mandatory" //check this out 
-    }}>
+    <div>
     {songArr.length > 0 && currentIndex != -1 ?
     (
-      <SongPage {...songArr[currentIndex]}/>
+      <SongPage {...songArr[currentIndex]} prevBackground={prevBackground} />
       
     ): 
     <StartPage startMessage = {startMessage} name = {name} playlistId = {playlistId!}/>

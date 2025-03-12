@@ -6,7 +6,8 @@ export type SongPageProps = {
     message: string[],
     songName: string,
     songPictureUrl: string,
-    songBackground?: string, 
+    songBackground: string, 
+    prevBackground?: string
 
 }
 
@@ -17,15 +18,22 @@ export function SongPage(
         songName,
         songPictureUrl,
         songBackground,
+        prevBackground
     }: SongPageProps){
+
+    const [change, setChange] = useState(false);
+    useEffect(()=>{
+        const timeout = setTimeout(()=> setChange(true), 1000);
+
+        return () => clearTimeout(timeout); 
+    }, []);
 
 
     return(
         <>
         <div className = 'songDiv'
         style = {{
-            backgroundImage: (songBackground != undefined) ?  `url(${songBackground})` : 'none',
-            backgroundColor: (songBackground != undefined) ? 'rgba(0,0,0,0)' : 'rgba(0,0,0, 0.9)'
+            backgroundImage: (!change) ? (prevBackground)?  `url(${prevBackground})` : 'rgb(0,0,0,0)' : `url(${songBackground})`,
         }}
         >
             <div className = 'songDivSection'

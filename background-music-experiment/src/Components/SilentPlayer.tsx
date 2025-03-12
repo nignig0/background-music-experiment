@@ -10,16 +10,12 @@ export function SilentPlayer({ playListId, songChangeCallBack }: SilentPlayerPro
     
     const token = localStorage.getItem('token');
     const deviceIdRef = useRef<string>('');
-    const lastSongId = useRef<string>('');
+    const lastSongId = useRef<string>(null);
     console.log('token player token -> ', token);
 
-    const transferPlayBack = async()=>{
-        if(deviceIdRef.current == ''){
-            console.log('Error!... no current ID');
-            return;
-        }
+    const transferPlayBack = async(device_id: string)=>{
         await axios.put('https://api.spotify.com/v1/me/player',{
-            device_ids: [deviceIdRef.current],
+            device_ids: [device_id],
             play: true
         }, {
             headers: {
@@ -32,7 +28,8 @@ export function SilentPlayer({ playListId, songChangeCallBack }: SilentPlayerPro
                 console.log('Error Transferring playback -> ', response.data);
                 //alert('Refresh... there was an error. oops!');
             }else{
-                
+                await turnOffShuffle();
+                await playSong(device_id);
             }
         })
         .catch((e)=>{
@@ -42,11 +39,6 @@ export function SilentPlayer({ playListId, songChangeCallBack }: SilentPlayerPro
     }
 
     const turnOffShuffle = async ()=>{
-        if(deviceIdRef.current == ''){
-            console.log('Error toggling shuffle ... no device Id')
-            //alert('Error!');
-            return;
-        }
         await axios.put('https://api.spotify.com/v1/me/player/shuffle?state=false',{
         }, {
             headers: {
@@ -66,15 +58,10 @@ export function SilentPlayer({ playListId, songChangeCallBack }: SilentPlayerPro
         });
     }
 
-    const playSong = async ()=>{
-        if(deviceIdRef.current == ''){
-            console.log('Error playing song... no device Id')
-            //alert('Error!');
-            return;
-        }
+    const playSong = async (device_id: string)=>{
         await axios.put('https://api.spotify.com/v1/me/player/play',{
-            device_id: deviceIdRef.current,
-            constext_uri: [`spotify:playlist:${playListId}`]
+            device_id: device_id,
+            context_uri: `spotify:playlist:${playListId}`
         }, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -110,25 +97,29 @@ export function SilentPlayer({ playListId, songChangeCallBack }: SilentPlayerPro
             });
 
 
-            player.addListener("ready", async (device_id: any)=>{
-                deviceIdRef.current = device_id;
-                await transferPlayBack();
-                await turnOffShuffle();
-                await playSong();
+            player.addListener("ready", async ({ device_id }: any)=>{
+                await transferPlayBack(device_id);
                 console.log('Ready with device Id -> ', device_id);
                 
             });
 
             player.addListener('player_state_changed', (state: any)=>{
+
+                console.log('in the state changed listener');
                 if(!state || !state.track_window.current_track) return;
 
+                console.log('skipped the return');
                 const currentTrackId = state.track_window.current_track.id;
 
                 //if the song has changed
-                if(lastSongId.current != '' && lastSongId.current != currentTrackId) songChangeCallBack(); 
+                if(lastSongId.current && lastSongId.current != currentTrackId){
+                    console.log('change the song')
+                    songChangeCallBack(); 
+                }
+                    
 
                 lastSongId.current = currentTrackId;
-            })
+            });
 
             player.addListener("not_ready", (device_id: any)=>{
                 console.log('Device id has gone offline -> ', device_id);
