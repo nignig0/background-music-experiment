@@ -22,7 +22,7 @@ const login = async (req: Request, res: Response)=>{
             response_type: "code",
             client_id: spotifyClientId,
             scope: scope,
-            redirect_uri: (environment == 'LOCAL') ? 'http://127.0.0.1:5000/auth/callback' : 'https://playliz.netlify.app/auth/callback',
+            redirect_uri: (environment == 'LOCAL') ? 'http://127.0.0.1:5000/auth/callback' : 'https://background-music-experiment.onrender.com/auth/callback',
             state: state as string
         });
 
