@@ -1,6 +1,9 @@
 import { backendUrl } from '../constants';
 import './../styles/App.css'
 
+//The hard coding here is amateurish
+//need to up the backend
+
 export type StartPageProps = {
     startMessage: string, 
     name: string,
@@ -27,13 +30,14 @@ export function StartPage({
                 color: 'white',
                 fontSize: "40px"
             }}>
-                Elizabeth
+               {playlistId == '44fKkD2g3CY5TetqnNGYUb'? 'Elizabeth' : 'Hello Siri'} 
             </h3>
             <h1 className= 'poppins-regular-glow'
             style={{
                 color: 'white',
                 fontSize: "80px",
-            }}>I'm so in love with you!</h1>
+            }}>
+               {playlistId == 'Elizabeth' ?"I'm so in love with you!": "I do hope you enjoy this!" } </h1>
 
 
             <h1 

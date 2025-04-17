@@ -102,3 +102,69 @@ export const HT: string[] = [
 ];
 
 export const messages: string[][] = [suchAThing, heaven, Ikyk, Heavenly, BabyBlue, tooGood, anybody, ICu, LFG, HT];
+
+const GG:string[] = [
+    "So... welcome to this all pink playlist",
+    "I feel like I'm overdoing the pink thing",
+    "But... well... I couldn't think of a better theme atm",
+    "We're starting with this song. It's a sad song, so I apologise in advance",
+    "But it's really good!",
+    "Enjoy!"
+];
+
+const stay: string[] = [
+    "I hope you liked the last song.",
+    "We're not moving super far off with this song",
+    "I love this song cause of the jazz rap vibe. It's pretty nice",
+    "Warning: The last 30 seconds are kinda... hmm... just have headphones on"
+];
+
+const PC: string[] = [
+    "Nothing much to say here",
+    "Reminds me of my first year in uni",
+    "Before I started going to the gym, I'd wake up at like 3am and start walking around campus",
+    "I used to listen to this song quite often",
+    "PS... if you go to the spotify app, you can control the songs."
+];
+
+const DD: string[] = [
+    "Tani commentary: This song is... nice. Vibey",
+    "Idk... I don't have any significant feelings linked to this song"
+];
+
+const POF: string[] = [
+    "This is from one of my favourite RnB albums",
+    "Ari Lennox is so underrated. She's one of the best"
+];
+
+const GTD: string[] = [
+    "The point of this app was to make playlists but with messages",
+    "I don't have a specific message here",
+    "I'm not really a dancing type tbh",
+    "Still a nice song though"
+];
+
+const TO: string[] = [
+    "I don't have a specific message here",
+];
+
+const LTY: string[] = [
+    "This song is kinda special cause it got me through a tough time",
+    "I was taking a deep learning class and my final project was fine tuning some model",
+    "to convert twi (a Ghanaian language) audio to text. ",
+    "It wasn't going well tbh. I remember being in the lab from like 8am - 3am. Would've gone mad, but...",
+    "I found this song"
+];
+
+const HIH: string[] = [
+    "Well... this is the last song",
+    "I hope you liked the songs",
+    "And the pink theme",
+    "There were other songs I could've added, but I wanted to pick songs that you've probably never heard before.",
+    "Yeah... In general, I hope you're having a good day Siri",
+    "Whenever you see this."
+
+];
+
+
+export const messages2: string[][] = [GG, stay, PC, DD, POF, GTD, TO, LTY, HIH];

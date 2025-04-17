@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import '.././styles/App.css';
 import { SongPage } from '.././Components/SongPage';
-import { messages } from '.././songs';
+import { messages, messages2 } from '.././songs';
 import { SilentPlayer } from '.././Components/SilentPlayer';
 import { StartPage } from '.././Components/StartPage';
 import axios from 'axios';
@@ -31,7 +31,12 @@ export function MainPage() {
   else playlistId = localStorage.getItem('playlistId')!;
 
   //there needs to be a better way to do UP
-  
+  let activeMessages: string[][];
+  if(playlistId == '44fKkD2g3CY5TetqnNGYUb'){
+    activeMessages = messages;
+  }else{
+    activeMessages = messages2;
+  }
   
   useEffect(()=>{
     //also add whether we already have the token
@@ -79,7 +84,7 @@ export function MainPage() {
             const song: Track = {
               songName: item.track.name,
               songPictureUrl: item.track.album.images[0].url,
-              message: messages[index], //testing please!!!
+              message: activeMessages[index], //testing please!!!
               artists: item.track.artists.map((a: any)=> a.name),
               songBackground: backgroundUrl.toURL(),
               songId: item.track.id,
