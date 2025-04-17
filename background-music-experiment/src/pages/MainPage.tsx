@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import '.././styles/App.css';
 import { SongPage } from '.././Components/SongPage';
-import { message } from '.././songs';
+import { messages } from '.././songs';
 import { SilentPlayer } from '.././Components/SilentPlayer';
 import { StartPage } from '.././Components/StartPage';
 import axios from 'axios';
@@ -18,9 +18,14 @@ export function MainPage() {
   const [prevBackground, setPrevBackground] = useState<string>('');
   const [currentIndex, setCurrentIndex] = useState(-1);
   const currentIndexRef = useRef(-1);
+
+  const [name, setName] = useState('loading...');
+  const [loading, setLoading] = useState(true);
   
   const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME; 
   
+  const songIndexMap = new Map<string, number>();
+
   let { playlistId } = useParams();
   if(playlistId) localStorage.setItem('playlistId', playlistId) ?? '';
   else playlistId = localStorage.getItem('playlistId')!;
@@ -52,11 +57,18 @@ export function MainPage() {
           alert('There was an error getting the playlist. Try again!');
           console.log(response.data);
         }else{
+
+          
+
           const { tracks } = response.data;
           const { items } = tracks;
           const songs: Track[] = [];
 
+          setName(name=> name);
+          setLoading(false);
+
           //get all the songs in the playlist
+          let index = 0;
           for(const item of items){
             const backgroundUrl = new CloudinaryImage(
               item.track.album.images[0].url, {cloudName: cloudName})
@@ -67,12 +79,14 @@ export function MainPage() {
             const song: Track = {
               songName: item.track.name,
               songPictureUrl: item.track.album.images[0].url,
-              message: message, //testing please!!!
+              message: messages[index], //testing please!!!
               artists: item.track.artists.map((a: any)=> a.name),
               songBackground: backgroundUrl.toURL(),
               songId: item.track.id,
             }
             songs.push(song);
+            songIndexMap.set(item.track.id, index);
+            index++;
           }
           console.log('Songs -> ', songs);
           setSongArr(songs);
@@ -90,23 +104,26 @@ export function MainPage() {
   
 
   const startMessage  = "All of this was inspired by you!"
-  const name = "Generic Name";
-  const callBack = ()=>{
-    console.log('call back hit!');
-    if(currentIndex < songArrRef.current.length-1){
+  const callBack = (current_track:any)=>{
+    
+      console.log('call back hit!');
+    if(!current_track) return;
 
-      const newSong = songArrRef.current[currentIndexRef.current+1];
+    const currentId = current_track.id;
+    if(!currentId) return;
+    const  newIndex = songIndexMap.get(currentId as string)!;
+    
+    const newSong = songArrRef.current[newIndex];
       console.log(newSong);
       const img = new Image();
       img.src = newSong.songBackground;
       img.onload = ()=>{
-        setPrevBackground(prev => (currentIndex >= 0 ) ? songArrRef.current[currentIndex].songBackground : songArrRef.current[0].songBackground);
-        setCurrentIndex(currentIndex => currentIndex+1);
-        currentIndexRef.current+=1;
+        setPrevBackground(_prev => (currentIndex >= 0 ) ? songArrRef.current[currentIndex].songBackground : songArrRef.current[0].songBackground);
+        setCurrentIndex(_currentIndex => newIndex)
+        currentIndexRef.current = newIndex; //look at this
       }
-    }else{
-      //navigate to the endpage!
-    }
+    
+    
   }
   return (
 
@@ -119,7 +136,7 @@ export function MainPage() {
       <SongPage {...songArr[currentIndex]} prevBackground={prevBackground} />
       
     ): 
-    <StartPage startMessage = {startMessage} name = {name} playlistId = {playlistId!}/>
+    <StartPage startMessage = {startMessage} name = {name} playlistId = {playlistId!} loading = {loading} />
     }
     
     </div>

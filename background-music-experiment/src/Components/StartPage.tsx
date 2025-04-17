@@ -4,13 +4,15 @@ import './../styles/App.css'
 export type StartPageProps = {
     startMessage: string, 
     name: string,
-    playlistId: string
+    playlistId: string,
+    loading: boolean
 }
 
 export function StartPage({
     startMessage,
     name,
-    playlistId
+    playlistId,
+    loading
 }: StartPageProps){
 
     return (
@@ -29,13 +31,13 @@ export function StartPage({
                 color: 'white',
                 fontSize: "40px"
             }}>
-                Welcome to 
+                Elizabeth
             </h3>
             <h1 className= 'poppins-regular-glow'
             style={{
                 color: 'white',
                 fontSize: "80px",
-            }}>{name}</h1>
+            }}>I'm so in love with you!</h1>
 
 
             <h1 

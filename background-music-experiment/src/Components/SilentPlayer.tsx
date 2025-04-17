@@ -3,7 +3,7 @@ import axios from "axios";
 
 type SilentPlayerProps = {
     playListId: string,
-    songChangeCallBack: ()=> void
+    songChangeCallBack: (x:any)=> void
 }
 
 export function SilentPlayer({ playListId, songChangeCallBack }: SilentPlayerProps){
@@ -113,7 +113,7 @@ export function SilentPlayer({ playListId, songChangeCallBack }: SilentPlayerPro
                 //if the song has changed
                 if(lastSongId.current && lastSongId.current != currentTrackId){
                     console.log('change the song')
-                    songChangeCallBack(); 
+                    songChangeCallBack(state.track_window.current_track); 
                 }
                     
 
@@ -126,6 +126,8 @@ export function SilentPlayer({ playListId, songChangeCallBack }: SilentPlayerPro
 
             player.connect();
         };
+
+        //remove listeners later
     }, []);
 
 
