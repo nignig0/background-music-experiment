@@ -9,6 +9,7 @@ let access_token: any;
 const spotifyClientId = process.env.SPOTIFY_CLIENT_ID! as string;
 const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET! as string;
 const frontendUrl = process.env.FRONTEND_URL! as string;
+const environment = process.env.ENVIRONMENT! as string;
 
 const login = async (req: Request, res: Response)=>{
     try{
@@ -21,7 +22,7 @@ const login = async (req: Request, res: Response)=>{
             response_type: "code",
             client_id: spotifyClientId,
             scope: scope,
-            redirect_uri: 'http://127.0.0.1:5000/auth/callback',
+            redirect_uri: (environment == 'LOCAL') ? 'http://127.0.0.1:5000/auth/callback' : '',
             state: state as string
         });
 
