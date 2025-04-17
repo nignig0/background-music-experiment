@@ -9,11 +9,7 @@ export type StartPageProps = {
 }
 
 export function StartPage({
-    startMessage,
-    name,
-    playlistId,
-    loading
-}: StartPageProps){
+    playlistId}: StartPageProps){
 
     return (
         <>
