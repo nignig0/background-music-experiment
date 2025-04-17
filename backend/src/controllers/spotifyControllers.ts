@@ -48,7 +48,7 @@ const authCallback = async (req: Request, res: Response)=>{
     await axios.post('https://accounts.spotify.com/api/token', 
         {
             code: code, 
-            redirect_uri: 'http://127.0.0.1:5000/auth/callback',
+            redirect_uri: (environment == 'LOCAL') ? 'http://127.0.0.1:5000/auth/callback' : 'https://background-music-experiment.onrender.com/auth/callback',
             grant_type: 'authorization_code'
         }, 
         {
